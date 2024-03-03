@@ -1,0 +1,44 @@
+
+#processes{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+}
+
+.process{
+    border: 1px solid black;
+    padding: 10px;
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    place-items: center;
+    justify-items: start;
+}
+
+.info-section{
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    place-items: center;
+}
+
+.name{
+    margin: 0;
+}
+.cmd{
+    display: none;
+}
+
+
+.status{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.status.running{
+    background-color: green;
+}
+
+.status.stopped{
+    background-color: red;
+}

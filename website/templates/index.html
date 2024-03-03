@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Process Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div id="processes">
+        {% for process in processes %}
+            <div class="process">
+                <div class="info-section">
+                    <h2 class="name">{{ process.name }}</h2>
+                    <p class="cmd">{{ process.command }}</p>
+                    {% if process.is_running %}
+                        <div class="status running"></div>
+                    {% else %} 
+                        <div class="status stopped"></div>
+                    {% endif %}
+                </div>
+                <form action="/change-status?name={{ process.name }}" method="POST">
+                    {% if process.is_running %}
+                        <input class="btn" type="submit" name="stop" value="Stop">
+                    {% else %}
+                        <input class="btn" type="submit" name="start" value="Start">
+                    {% endif %}
+                    </form>
+            </div>
+        {% endfor %}
+    </div>
+
+    <script>
+    </script>
+</body>
+</html>
