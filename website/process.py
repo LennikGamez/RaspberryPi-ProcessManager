@@ -7,6 +7,9 @@ class Process:
         self.process = None
         self.is_running = False
         self.start_on_startup = onstartup
+
+        if self.start_on_startup:
+            self.run()
     def run(self):
         if not self.is_running:
             self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=False)
