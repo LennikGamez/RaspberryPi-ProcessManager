@@ -5,13 +5,28 @@ from process import Process
 
 processes = []
 
+def getJSONURL():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    return os.path.join(SITE_ROOT, 'static', 'processes.json')
+
 def read_processes():
     processes.clear()
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, 'static', 'processes.json')
-    with open(json_url, "r") as f:
+    with open(getJSONURL(), "r") as f:
         for process in json.load(f).get("processes"):
-            processes.append(Process(process.get("name"), process.get("cmd")))
+            processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp")))
+
+def changeStartUpInJSON(name, value):
+    json_file = getJSONURL()
+    # load old data from json
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+        for process in data["processes"]:
+            if process["name"] == name:
+                process["onStartUp"] = value
+
+    # write new data to json
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
 
 
 app = Flask(__name__)
@@ -49,5 +64,15 @@ def add():
 def load():
     read_processes()
     return redirect(url_for("manager"))
+
+@app.route("/change-startUp", methods=["POST"])
+def change_startUp():
+    name = request.args.get("name")
+    for i, process in enumerate(processes):
+        if process.name == name:
+            process.start_on_startup = not process.start_on_startup
+            changeStartUpInJSON(name, process.start_on_startup)
+    return redirect(url_for("manager"))
+
 
 app.run(debug=True)

@@ -26,6 +26,9 @@
                         <input class="btn" type="submit" name="start" value="Start">
                     {% endif %}
                     </form>
+                <form action="/change-startUp?name={{ process.name }}" method="POST" id="startUpForm">
+                    <input {{ "checked" if process.start_on_startup }} type="checkbox" name="onStartUp" onchange="this.form.submit()"> 
+                </form>
             </div>
         {% endfor %}
     </div>
