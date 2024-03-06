@@ -4,13 +4,13 @@
             "name": "VideoStream Page",
             "description": "This is the first process",
             "cmd": "timeout /T 10",
-            "onStartUp": true
+            "onStartUp": false
         },
         {
             "name": "VideoStream Backend",
             "description": "This is the second process",
             "cmd": "python C:\\Users\\leand\\OneDrive\\Dokumente\\Repos\\ProcessManager\\process1.py",
-            "onStartUp": true
+            "onStartUp": false
         }
     ]
 }

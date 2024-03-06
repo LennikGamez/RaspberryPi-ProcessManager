@@ -15,6 +15,14 @@ def read_processes():
         for process in json.load(f).get("processes"):
             processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp")))
 
+def addProcessToJson(name, cmd, onStartUp):
+    json_file = getJSONURL()
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+        data["processes"].append({"name": name, "cmd": cmd, "onStartUp": onStartUp})
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
+
 def changeStartUpInJSON(name, value):
     json_file = getJSONURL()
     # load old data from json
@@ -53,12 +61,17 @@ def manager():
             process.is_running = running
     return render_template("index.html", processes=processes)
 
-@app.route("/add-process", methods=["POST"])
+@app.route("/add-process", methods=["POST", "GET"])
 def add():
-    name = request.form.get("name")
-    command = request.form.get("command")
-    processes.append(Process(name, command))
-    return redirect(url_for("manager"))
+    if request.method == "GET":
+        return render_template("addProcess.html")
+    else:
+        name = request.form.get("name")
+        command = request.form.get("command")
+        onStartUp = request.form.get("onStartUp")
+        processes.append(Process(name, command, onStartUp))
+        addProcessToJson(name, command, onStartUp)
+        return redirect(url_for("manager"))
 
 @app.route("/load")
 def load():

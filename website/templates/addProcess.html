@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Process</title>
+</head>
+<body>
+    <button onclick="history.back()">Back</button>
+    <form action="/add-process" method="POST">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+        <label for="command">Command</label>
+        <input type="text" name="command" id="command">
+        <label for="onStartUp">AutoStart</label>
+        <input id="onStartUp" type="checkbox" name="onStartUp">
+        <input type="submit">
+        <input type="reset">
+    </form>
+
+
+    <style>
+        button{
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        form{
+            display: grid;
+            place-items: center;
+            gap: 10px;
+            font-size: larger;
+        }
+        form > input{
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</body>
+</html>
