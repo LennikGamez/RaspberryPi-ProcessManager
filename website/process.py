@@ -1,11 +1,12 @@
 import subprocess
 
 class Process:
-    def __init__(self, name, command):
+    def __init__(self, name, command, onstartup=False):
         self.name = name
         self.command = command
         self.process = None
         self.is_running = False
+        self.start_on_startup = onstartup
     def run(self):
         if not self.is_running:
             self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=False)
