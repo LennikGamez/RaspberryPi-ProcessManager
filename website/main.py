@@ -36,6 +36,17 @@ def changeStartUpInJSON(name, value):
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 
+def removeProcessFromJSON(name):
+    json_file = getJSONURL()
+    # load old data from json
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+        for process in data["processes"]:
+            if process["name"] == name:
+                data["processes"].remove(process)
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
+
 
 app = Flask(__name__)
 
@@ -81,11 +92,21 @@ def load():
 @app.route("/change-startUp", methods=["POST"])
 def change_startUp():
     name = request.args.get("name")
-    for i, process in enumerate(processes):
+    for process in processes:
         if process.name == name:
             process.start_on_startup = not process.start_on_startup
             changeStartUpInJSON(name, process.start_on_startup)
     return redirect(url_for("manager"))
 
+
+@app.route("/delete-process", methods = ["POST"])
+def delete():
+    name = request.args.get("name")
+    for process in processes:
+        if process.name == name:
+            processes.remove(process)
+            removeProcessFromJSON(name)
+            break
+    return redirect(url_for("manager"))
 
 app.run(debug=True)
