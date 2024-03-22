@@ -13,7 +13,7 @@ def read_processes():
     processes.clear()
     with open(getJSONURL(), "r") as f:
         for process in json.load(f).get("processes"):
-            processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp")))
+            processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp"), process.get("endpoint")))
 
 def addProcessToJson(name, cmd, onStartUp):
     json_file = getJSONURL()

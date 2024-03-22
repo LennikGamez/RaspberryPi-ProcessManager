@@ -5,7 +5,7 @@
             "description": "This is an example for a possible process.json file",
             "cmd": "timeout /T 10",
             "onStartUp": false,
-            "endpoint": "http://127.0.0.1:5000"
+            "endpoint": "http://127.0.0.1:5500"
         },
         {
             "name": "VideoStream Backend",

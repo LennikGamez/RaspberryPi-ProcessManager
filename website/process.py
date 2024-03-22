@@ -1,12 +1,13 @@
 import subprocess
 
 class Process:
-    def __init__(self, name, command, onstartup=False):
+    def __init__(self, name, command, onstartup=False, endpoint='None'):
         self.name = name
         self.command = command
         self.process = None
         self.is_running = False
         self.start_on_startup = onstartup
+        self.endpoint = endpoint
 
         if self.start_on_startup:
             self.run()
