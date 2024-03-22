@@ -11,9 +11,10 @@
 }
 
 #processes{
+    margin: 10px;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
     gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
 }
 
 .process{
@@ -23,12 +24,15 @@
     grid-template-rows: 2fr 1fr;
     place-items: center;
     justify-items: start;
+    position: relative;
 }
 
 .info-section{
+    width: 100%;
     display: grid;
     grid-template-columns: 2fr 1fr;
     place-items: center;
+    justify-items: start;
 }
 
 .name{
@@ -44,6 +48,7 @@
     height: 20px;
     border-radius: 50%;
     padding: 5px;
+    justify-self: center;
 }
 
 .status.running{
@@ -52,4 +57,14 @@
 
 .status.stopped{
     background-color: red;
+}
+
+
+.rem-btn{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+
+    background-color: transparent;
+    border: none;
 }
