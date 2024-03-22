@@ -1,7 +1,7 @@
 import subprocess
 
 class Process:
-    def __init__(self, name, command, onstartup=False, endpoint='None'):
+    def __init__(self, name, command, onstartup=False, endpoint=None):
         self.name = name
         self.command = command
         self.process = None
