@@ -26,12 +26,23 @@
                         <input class="btn" type="submit" name="start" value="Start">
                     {% endif %}
                     </form>
-                <form action="/change-startUp?name={{ process.name }}" method="POST" id="startUpForm">
-                    <input {{ "checked" if process.start_on_startup }} type="checkbox" name="onStartUp" onchange="this.form.submit()"> 
+                <div class="bottom-section">
+                    <form action="/change-startUp?name={{ process.name }}" method="POST" id="startUpForm">
+                        <input {{ "checked" if process.start_on_startup }} type="checkbox" name="onStartUp" onchange="this.form.submit()"> 
+                    </form>
+    
+                    {% if process.endpoint %}
+                        <a class="endpoint" href="{{ process.endpoint }}">{{ process.endpoint }}</a>
+                    {% endif %}
+                </div>
+        
+                <form action="/delete-process?name={{ process.name }}" method="POST">
+                    <input class="rem-btn" type="submit" name="delete" value="X">
                 </form>
             </div>
         {% endfor %}
     </div>
+    <button id="add" onclick="window.location.href='add-process'">+</button>
 
     <script>
     </script>

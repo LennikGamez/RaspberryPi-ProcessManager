@@ -13,7 +13,15 @@ def read_processes():
     processes.clear()
     with open(getJSONURL(), "r") as f:
         for process in json.load(f).get("processes"):
-            processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp")))
+            processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp"), process.get("endpoint")))
+
+def addProcessToJson(name, cmd, onStartUp):
+    json_file = getJSONURL()
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+        data["processes"].append({"name": name, "cmd": cmd, "onStartUp": onStartUp})
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
 
 def changeStartUpInJSON(name, value):
     json_file = getJSONURL()
@@ -25,6 +33,17 @@ def changeStartUpInJSON(name, value):
                 process["onStartUp"] = value
 
     # write new data to json
+    with open(json_file, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def removeProcessFromJSON(name):
+    json_file = getJSONURL()
+    # load old data from json
+    with open(json_file, 'r') as f:
+        data = json.load(f)
+        for process in data["processes"]:
+            if process["name"] == name:
+                data["processes"].remove(process)
     with open(json_file, 'w') as f:
         json.dump(data, f, indent=4)
 
@@ -53,12 +72,17 @@ def manager():
             process.is_running = running
     return render_template("index.html", processes=processes)
 
-@app.route("/add-process", methods=["POST"])
+@app.route("/add-process", methods=["POST", "GET"])
 def add():
-    name = request.form.get("name")
-    command = request.form.get("command")
-    processes.append(Process(name, command))
-    return redirect(url_for("manager"))
+    if request.method == "GET":
+        return render_template("addProcess.html")
+    else:
+        name = request.form.get("name")
+        command = request.form.get("command")
+        onStartUp = request.form.get("onStartUp")
+        processes.append(Process(name, command, onStartUp))
+        addProcessToJson(name, command, onStartUp)
+        return redirect(url_for("manager"))
 
 @app.route("/load")
 def load():
@@ -68,11 +92,21 @@ def load():
 @app.route("/change-startUp", methods=["POST"])
 def change_startUp():
     name = request.args.get("name")
-    for i, process in enumerate(processes):
+    for process in processes:
         if process.name == name:
             process.start_on_startup = not process.start_on_startup
             changeStartUpInJSON(name, process.start_on_startup)
     return redirect(url_for("manager"))
 
+
+@app.route("/delete-process", methods = ["POST"])
+def delete():
+    name = request.args.get("name")
+    for process in processes:
+        if process.name == name:
+            processes.remove(process)
+            removeProcessFromJSON(name)
+            break
+    return redirect(url_for("manager"))
 
 app.run(debug=True)

@@ -2,15 +2,16 @@
     "processes": [
         {
             "name": "VideoStream Page",
-            "description": "This is the first process",
+            "description": "This is an example for a possible process.json file",
             "cmd": "timeout /T 10",
-            "onStartUp": true
+            "onStartUp": false,
+            "endpoint": "http://127.0.0.1:5500"
         },
         {
             "name": "VideoStream Backend",
             "description": "This is the second process",
             "cmd": "python C:\\Users\\leand\\OneDrive\\Dokumente\\Repos\\ProcessManager\\process1.py",
-            "onStartUp": true
+            "onStartUp": false
         }
     ]
 }
