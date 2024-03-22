@@ -1,11 +1,11 @@
-// This file is a template for the processes.json file.
 {
     "processes": [
         {
             "name": "VideoStream Page",
-            "description": "This is the first process",
+            "description": "This is an example for a possible process.json file",
             "cmd": "timeout /T 10",
-            "onStartUp": false
+            "onStartUp": false,
+            "endpoint": "http://127.0.0.1:5000"
         },
         {
             "name": "VideoStream Backend",
