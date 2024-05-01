@@ -18,8 +18,11 @@ class Process:
         return self
     def stop(self):
         if self.is_running:
-            self.process.kill()
-            self.process.terminate()
+            if 'sudo' in self.command:
+                subprocess.Popen(['sudo', 'kill', self.process.pid])
+            else:
+                self.process.kill()
+                self.process.terminate()
             self.is_running = False
         return self
     
