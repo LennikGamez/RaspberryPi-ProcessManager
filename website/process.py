@@ -1,4 +1,4 @@
-import subprocess
+import subprocess, psutil
 
 class Process:
     def __init__(self, name, command, onstartup=False, endpoint=None):
@@ -15,18 +15,21 @@ class Process:
         if not self.is_running:
             self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=False)
             self.is_running = True
+            print(self.process.pid)
         return self
     def stop(self):
         if self.is_running:
-            if 'sudo' in self.command:
-                subprocess.Popen(['sudo', 'kill', str(self.process.pid)])
-            else:
-                self.process.kill()
-                self.process.terminate()
+            children = psutil.Process(self.process.pid).children()
+            for child in children:
+                child.kill()
+                
+            self.process.kill()
+            self.process.terminate()
             self.is_running = False
         return self
     
     def running(self):
         if not self.process:
             return False
-        return self.process.poll() == None
+        # print(self.process.poll())
+        return self.process.poll() is None
