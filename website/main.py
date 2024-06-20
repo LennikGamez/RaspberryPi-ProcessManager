@@ -82,7 +82,7 @@ def add():
         name = request.form.get("name")
         command = request.form.get("command")
         onStartUp = request.form.get("onStartUp")
-        processes.append(Process(name, command, onStartUp))
+        processes.append(Process(name, command, onstartup=onStartUp))
         addProcessToJson(name, command, onStartUp)
         read_processes()
         return redirect(url_for("manager"))
