@@ -110,6 +110,7 @@ def delete():
             processes.remove(process)
             removeProcessFromJSON(name)
             break
+    read_processes()
     return redirect(url_for("manager"))
 
 app.run(debug=True)
