@@ -84,6 +84,7 @@ def add():
         onStartUp = request.form.get("onStartUp")
         processes.append(Process(name, command, onStartUp))
         addProcessToJson(name, command, onStartUp)
+        read_processes()
         return redirect(url_for("manager"))
 
 @app.route("/load")
