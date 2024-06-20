@@ -16,10 +16,8 @@ def read_processes():
             processes.append(Process(process.get("name"), process.get("cmd"), process.get("onStartUp"), process.get("endpoint")))
 
 
-parse_command = lambda command: " ".join(command.split())
-
 def addProcessToJson(name, cmd, onStartUp):
-    cmd = parse_command(cmd)
+    cmd = cmd.split()
     json_file = getJSONURL()
     with open(json_file, 'r') as f:
         data = json.load(f)
