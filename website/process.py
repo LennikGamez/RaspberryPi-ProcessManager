@@ -1,4 +1,7 @@
+import os
 import subprocess, psutil
+import time
+import sys
 
 class Process:
     def __init__(self, name, command, onstartup=False, endpoint=None):
@@ -13,10 +16,16 @@ class Process:
             self.run()
     def run(self):
         if not self.is_running:
-            self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=False)
+            self.process = subprocess.Popen(self.command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, shell=False)
             self.is_running = True
-            print(self.process.pid)
+
         return self
+    
+    def log(self):
+        with open(f'{get_static_folder()}/log.txt', 'a+') as logfile:
+            for line in self.process.stdout.readlines():
+                logfile.write(time.localtime().tm_hour.__str__() + ':' + time.localtime().tm_min.__str__() + ':' + time.localtime().tm_sec.__str__() + ' - ' + self.name + ' - ' + line + '\n')
+                
     def stop(self):
         if self.is_running:
             children = psutil.Process(self.process.pid).children()
@@ -32,4 +41,15 @@ class Process:
         if not self.process:
             return False
         # print(self.process.poll())
-        return self.process.poll() is None
+        running = self.process.poll() is None
+
+        if not running:
+            self.log()
+
+        return running
+
+
+
+def get_static_folder():
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    return os.path.join(SITE_ROOT, 'static')
